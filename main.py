@@ -40,7 +40,7 @@ class BirbDetector:
 
     def video_merger(self):
         video = cv2.VideoWriter('edited_video.mp4', cv2.VideoWriter_fourcc(*'mp4v'), self.fps, self.resolution)
-        for i in range(0, 200):
+        for i in range(0, len(os.listdir('runs/detect/predict'))):
             img = cv2.imread('runs/detect/predict/' + str(i) + '.jpg')
             video.write(img)
         video.release()

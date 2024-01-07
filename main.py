@@ -40,8 +40,8 @@ class BirbDetector:
 
     def video_merger(self):
         video = cv2.VideoWriter('edited_video.mp4', cv2.VideoWriter_fourcc(*'mp4v'), self.fps, self.resolution)
-        for i in range(0, len(os.listdir('runs/detect/predict'))):
-            img = cv2.imread('runs/detect/predict/' + str(i) + '.jpg')
+        for i in range(0, len(os.listdir('runs/detect/predict'))-1):    #zmienić predict na predict2 dla 2, predict3 dla 3 itd
+            img = cv2.imread('runs/detect/predict/' + str(i) + '.jpg') #zmienić predict na predict2 dla 2, predict3 dla 3 itd
             video.write(img)
         video.release()
 
@@ -49,8 +49,6 @@ class BirbDetector:
     def yolo():
         model = YOLO("yolov8n.pt")
         model.train(data='coco128.yaml', epochs=3, imgsz=640, patience=2)
-
-        print(model('frames/0.jpg'))
 
     @staticmethod
     def hand_drawing():
@@ -70,7 +68,7 @@ class BirbDetector:
         model.predict('frames', save_dir='frames_edited', save=True, save_txt=True, conf=0.5)
 
     def iou(self):
-        with open('runs/detect/predict3/labels/0.txt', 'r') as f:
+        with open('runs/detect/predict/labels/0.txt', 'r') as f: #zmienić predict3 na predict dla 1 predict2 dla 2 itd
             lines = f.readlines()
         a = self.resolution[0]
         b = self.resolution[1]
@@ -82,7 +80,7 @@ class BirbDetector:
         int_area = (int_rect[2] - int_rect[0]) * (int_rect[3] - int_rect[1])
         union_area = (union_rect[2] - union_rect[0]) * (union_rect[3] - union_rect[1])
         iou = int_area / union_area
-        print(iou)
+        print(f'oto iou: {iou}')
 
 
 if __name__ == '__main__':
